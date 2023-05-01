@@ -31,7 +31,7 @@ async function searchImg(event) {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        per_page: 20,
+        per_page: 40,
         page: 1,
       },
     });
@@ -47,16 +47,20 @@ async function searchImg(event) {
       const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
       return `
         <div class="photo-card">
-          <img src="${webformatURL}" alt="${tags}" data-source="${largeImageURL}" loading="lazy" />
+        <a href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}"  data-source="${largeImageURL}" loading="lazy" />
           <div class="info">
             <p class="info-item"><b>Likes: ${likes}</b></p>
             <p class="info-item"><b>Views: ${views}</b></p>
             <p class="info-item"><b>Comments: ${comments}</b></p>
             <p class="info-item"><b>Downloads: ${downloads}</b></p>
           </div>
+          </a> 
         </div>`;
     }).join('');
+    Notiflix.Notify.info(`${totalHits}`);
     photo.innerHTML = photoHTML;
+    lightbox.refresh();
     if (totalHits > 40) {
       loadMoreBtn.style.display = 'block';
     }
@@ -80,23 +84,34 @@ async function loadMoreImages() {
     });
     const images = response.data.hits;
     const totalHits = response.data.totalHits;
+
+    const lastPage = Math.ceil(totalHits / 40);
+    console.log(lastPage)
+
+    if (page === lastPage) {
+      loadMoreBtn.style.display = "none";
+      Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+    }
+
     const photoHTML = images.map(image => {
       const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
       return `
         <div class="photo-card">
-          <img src="${webformatURL}" alt="${tags}" data-source="${largeImageURL}" loading="lazy" />
+        <a class="photka" href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           <div class="info">
             <p class="info-item"><b>Likes: ${likes}</b></p>
             <p class="info-item"><b>Views: ${views}</b></p>
             <p class="info-item"><b>Comments: ${comments}</b></p>
             <p class="info-item"><b>Downloads: ${downloads}</b></p>
           </div>
+          </a> 
         </div>`;
     }).join('');
     photo.insertAdjacentHTML('beforeend', photoHTML);
+    lightbox.refresh();
     if ((page * 40) >= totalHits) {
       loadMoreBtn.style.display = 'none';
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     }
     page += 1;
   } catch (error) {

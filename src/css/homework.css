@@ -65,14 +65,15 @@ input{
     color: #322422;
     display: flex;
     margin-bottom: 8px;
-
+    text-decoration: none;
 }
 
 b{
     border: black;
+    text-decoration: none;
 }
 
-img{
+.img{
     border-radius: 100px;
     height: 250px;
     width: 370px;
@@ -81,13 +82,28 @@ img{
     
 }
 
+.img {
+    height: 250px;
+    width: 370px;
+    max-width: 400px;
+    max-height: 250px;
+
+}
+
+.photka{
+    height: 250px;
+        width: 370px;
+        max-width: 400px;
+        max-height: 250px;
+}
+
 .load-more{
     color: white;
     background-color: #735F5B;
     border: none;
     border-radius: 5px;
     margin-top: 30px;
-    margin-left: 549px;
+    margin-left: 125px;
     width: 100px;
     height: 50px;
     transition: 500ms;
@@ -98,4 +114,8 @@ img{
     background-color: white;
     color: black;
     cursor: pointer;
+}
+
+.photka{
+    display: block;
 }

@@ -58,7 +58,7 @@ async function searchImg(event) {
           </a> 
         </div>`;
     }).join('');
-    Notiflix.Notify.info(`${totalHits}`);
+    Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
     photo.innerHTML = photoHTML;
     lightbox.refresh();
     if (totalHits > 40) {
@@ -97,7 +97,7 @@ async function loadMoreImages() {
       const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
       return `
         <div class="photo-card">
-        <a class="photka" href="${largeImageURL}">
+        <a href="${largeImageURL}">
         <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           <div class="info">
             <p class="info-item"><b>Likes: ${likes}</b></p>

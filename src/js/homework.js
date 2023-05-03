@@ -38,6 +38,8 @@ async function searchImg(event) {
     const images = response.data.hits;
     const totalHits = response.data.totalHits;
     if (images.length === 0) {
+      photo.innerHTML = '';
+      loadMoreBtn.style.display = '';
       Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       return;
     }
@@ -89,9 +91,9 @@ async function loadMoreImages() {
     console.log(lastPage)
 
     if (page === lastPage) {
-      loadMoreBtn.style.display = "none";
+      loadMoreBtn.style.display = '';
       Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-    }
+    } 
 
     const photoHTML = images.map(image => {
       const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;

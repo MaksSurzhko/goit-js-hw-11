@@ -72,6 +72,7 @@ async function searchImg(event) {
 }
 
 async function loadMoreImages() {
+  page += 1;
   try {
     const response = await axios.get('https://pixabay.com/api/', {
       params: {
@@ -81,19 +82,16 @@ async function loadMoreImages() {
         orientation: 'horizontal',
         safesearch: true,
         per_page: 40,
-        page: page + 1,
+        page,
       },
     });
     const images = response.data.hits;
     const totalHits = response.data.totalHits;
 
     const lastPage = Math.ceil(totalHits / 40);
-    console.log(lastPage)
+    
 
-    if (page === lastPage) {
-      loadMoreBtn.style.display = '';
-      Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-    } 
+    
 
     const photoHTML = images.map(image => {
       const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
@@ -115,7 +113,14 @@ async function loadMoreImages() {
     if ((page * 40) >= totalHits) {
       loadMoreBtn.style.display = 'none';
     }
-    page += 1;
+
+    if (page === lastPage) {
+      loadMoreBtn.style.display = '';
+      Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+    } 
+    console.log(lastPage)
+    console.log(page)
+    
   } catch (error) {
     console.log(error);
   }
